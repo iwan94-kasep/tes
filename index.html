@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+</head>
+<body>
+
+<h2>Register</h2>
+
+<form onsubmit="register(event)">
+
+    <label>Nama:</label><br>
+    <input type="text" id="nama" required><br><br>
+
+    <label>Email:</label><br>
+    <input type="text" id="email" required><br><br>
+
+    <label>Password:</label><br>
+    <input type="password" id="password" required><br><br>
+
+    <label>Daftar sebagai:</label><br>
+    <select id="role">
+        <option value="customer">Customer</option>
+        <option value="provider">Penyedia Jasa</option>
+    </select><br><br>
+
+    <button type="submit">Daftar</button>
+
+</form>
+
+<script>
+
+function register(e){
+    e.preventDefault();
+
+    let nama = document.getElementById("nama").value.trim();
+    let email = document.getElementById("email").value.trim().toLowerCase();
+    let password = document.getElementById("password").value.trim();
+    let role = document.getElementById("role").value;
+
+    let user = { nama, email, password, role };
+
+    // ambil data lama
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    // cek email sudah ada
+    let cek = users.find(u => u.email === email);
+
+    if(cek){
+        alert("Email sudah terdaftar!");
+        return;
+    }
+
+    // tambah user baru
+    users.push(user);
+
+    // simpan lagi
+    localStorage.setItem("users", JSON.stringify(users));
+
+    alert("Registrasi berhasil!");
+
+    window.location = "login.html";
+}
+</script>
+
+
+</body>
+</html>

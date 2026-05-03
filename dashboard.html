@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer</title>
+</head>
+<body>
+
+<h1>Dashboard Customer</h1>
+
+<p>Daftar jasa:</p>
+
+<ul>
+    <li>
+        Cuci Motor - 20rb 
+        <button onclick="pesan('Cuci Motor')">Pesan</button>
+    </li>
+    <li>
+        Service AC - 100rb 
+        <button onclick="pesan('Service AC')">Pesan</button>
+    </li>
+</ul>
+
+<script>
+function pesan(namaJasa){
+
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    let order = {
+        namaJasa: namaJasa,
+        customer: user.email
+    };
+
+    let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+    orders.push(order);
+
+    localStorage.setItem("orders", JSON.stringify(orders));
+
+    alert("Pesanan berhasil!");
+}
+</script>
+
+</body>
+</html>
