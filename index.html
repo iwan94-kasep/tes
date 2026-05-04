@@ -7,62 +7,31 @@
 
 <h2>Register</h2>
 
-<form onsubmit="register(event)">
-
-    <label>Nama:</label><br>
-    <input type="text" id="nama" required><br><br>
-
-    <label>Email:</label><br>
-    <input type="text" id="email" required><br><br>
-
-    <label>Password:</label><br>
-    <input type="password" id="password" required><br><br>
-
-    <label>Daftar sebagai:</label><br>
-    <select id="role">
-        <option value="customer">Customer</option>
-        <option value="provider">Penyedia Jasa</option>
-    </select><br><br>
-
-    <button type="submit">Daftar</button>
-
+<form id="form">
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button type="submit">Daftar</button>
 </form>
 
 <script>
+document.getElementById("form").addEventListener("submit", async function(e){
+  e.preventDefault();
 
-function register(e){
-    e.preventDefault();
+  let username = document.getElementById("username").value;
+  let password = document.getElementById("password").value;
 
-    let nama = document.getElementById("nama").value.trim();
-    let email = document.getElementById("email").value.trim().toLowerCase();
-    let password = document.getElementById("password").value.trim();
-    let role = document.getElementById("role").value;
+  let res = await fetch("http://localhost:3000/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ username, password })
+  });
 
-    let user = { nama, email, password, role };
-
-    // ambil data lama
-    let users = JSON.parse(localStorage.getItem("users")) || [];
-
-    // cek email sudah ada
-    let cek = users.find(u => u.email === email);
-
-    if(cek){
-        alert("Email sudah terdaftar!");
-        return;
-    }
-
-    // tambah user baru
-    users.push(user);
-
-    // simpan lagi
-    localStorage.setItem("users", JSON.stringify(users));
-
-    alert("Registrasi berhasil!");
-
-    window.location = "login.html";
-}
+  let data = await res.json();
+  alert(data.message);
+});
 </script>
-
 
 </body>
 </html>
